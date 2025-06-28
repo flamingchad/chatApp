@@ -1,0 +1,9 @@
+package com.nithieshm.chatapp.repository;
+
+import com.nithieshm.chatapp.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+}
