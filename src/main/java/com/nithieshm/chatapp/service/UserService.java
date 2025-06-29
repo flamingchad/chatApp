@@ -14,10 +14,12 @@ import java.util.Optional;
 public class UserService {
    private final UserRepository userRepository;
    private final PasswordEncoder passwordEncoder;
+   private final JwtService jwtService;
 
-   public UserService(UserRepository userRepository) {
+   public UserService(UserRepository userRepository, JwtService jwtService) {
        this.userRepository = userRepository;
        this.passwordEncoder = new BCryptPasswordEncoder();
+       this.jwtService = jwtService;
    }
 
    public void registerUser(UserRegistrationDTO userRegistrationDTO) {
@@ -35,14 +37,11 @@ public class UserService {
        userRepository.save(user);
    }
 
-   public void loginUser(UserLoginDTO userLoginDTO) {
-       if (userRepository.findByEmail(userLoginDTO.getEmail()).isEmpty()) {
-           throw new RuntimeException("User not found");
+   public String loginUser(UserLoginDTO userLoginDTO) {
+       User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow(() -> new RuntimeException("Invalid email or password"));
+       if (!passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+           throw new RuntimeException("Invalid credentials");
        }
-
-       Optional<User> user = userRepository.findByEmail(userLoginDTO.getEmail());
-       if (user.isPresent() && passwordEncoder.matches(userLoginDTO.getPassword(), user.get().getPassword())) {
-
-       }
+       return jwtService.generateToken(user);
    }
 }
