@@ -36,11 +36,11 @@ public class UserService {
    }
 
    public void loginUser(UserLoginDTO userLoginDTO) {
-       if (userRepository.findByUsername(userLoginDTO.getEmail()).isEmpty()) {
+       if (userRepository.findByEmail(userLoginDTO.getEmail()).isEmpty()) {
            throw new RuntimeException("User not found");
        }
 
-       Optional<User> user = userRepository.findByUsername(userLoginDTO.getEmail());
+       Optional<User> user = userRepository.findByEmail(userLoginDTO.getEmail());
        if (user.isPresent() && passwordEncoder.matches(userLoginDTO.getPassword(), user.get().getPassword())) {
 
        }
