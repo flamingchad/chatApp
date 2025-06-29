@@ -16,11 +16,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
-    @NotBlank(message = "Username is required.")
-    @Size(min = 3, max = 20, message = "Username should be between 3 and 20 characters")
-    private String username;
-
     @Email
     @Column(unique = true, nullable = false)
     @NotBlank(message = "Email is required")
@@ -28,8 +23,17 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Password is required")
-    @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters")
     private String password;
+
+    @Column(nullable = false)
+    @NotBlank(message = "First name is required")
+    @Size(min = 1, max = 64, message = "First name should be between 1 and 64 characters")
+    private String firstName;
+
+    @Column(nullable = false)
+    @NotBlank(message = "First name is required")
+    @Size(min = 1, max = 64, message = "First name should be between 1 and 64 characters")
+    private String lastName;
 
     private LocalDateTime createdAt;
 
@@ -37,11 +41,12 @@ public class User {
 
     public User() {}
 
-    public User(UUID id, String username, String email, String password, LocalDateTime createdAt, boolean isOnline) {
+    public User(UUID id, String email, String password, String firstName, String lastName, LocalDateTime createdAt, boolean isOnline) {
         this.id = id;
-        this.username = username;
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.createdAt = createdAt;
         this.isOnline = isOnline;
     }
@@ -54,14 +59,6 @@ public class User {
         this.id = id;
     }
 
-    public @NotBlank(message = "Username is required.") @Size(min = 3, max = 20, message = "Username should be between 3 and 20 characters") String getUsername() {
-        return username;
-    }
-
-    public void setUsername(@NotBlank(message = "Username is required.") @Size(min = 3, max = 20, message = "Username should be between 3 and 20 characters") String username) {
-        this.username = username;
-    }
-
     public @Email @NotBlank(message = "Email is required") String getEmail() {
         return email;
     }
@@ -70,12 +67,28 @@ public class User {
         this.email = email;
     }
 
-    public @NotBlank(message = "Password is required") @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters") String getPassword() {
+    public @NotBlank(message = "Password is required") String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotBlank(message = "Password is required") @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters") String password) {
+    public void setPassword(@NotBlank(message = "Password is required") String password) {
         this.password = password;
+    }
+
+    public @NotBlank(message = "First name is required") @Size(min = 1, max = 64, message = "First name should be between 1 and 64 characters") String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(@NotBlank(message = "First name is required") @Size(min = 1, max = 64, message = "First name should be between 1 and 64 characters") String firstName) {
+        this.firstName = firstName;
+    }
+
+    public @NotBlank(message = "First name is required") @Size(min = 1, max = 64, message = "First name should be between 1 and 64 characters") String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(@NotBlank(message = "First name is required") @Size(min = 1, max = 64, message = "First name should be between 1 and 64 characters") String lastName) {
+        this.lastName = lastName;
     }
 
     public LocalDateTime getCreatedAt() {
