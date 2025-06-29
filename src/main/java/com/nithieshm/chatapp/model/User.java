@@ -27,7 +27,8 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 8, max = 24, message = "Password is required")
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters")
     private String password;
 
     private LocalDateTime createdAt;
@@ -69,11 +70,11 @@ public class User {
         this.email = email;
     }
 
-    public @Size(min = 8, max = 24, message = "Password is required") String getPassword() {
+    public @NotBlank(message = "Password is required") @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters") String getPassword() {
         return password;
     }
 
-    public void setPassword(@Size(min = 8, max = 24, message = "Password is required") String password) {
+    public void setPassword(@NotBlank(message = "Password is required") @Size(min = 8, max = 24, message = "Password must be between 8 and 24 characters") String password) {
         this.password = password;
     }
 
@@ -91,5 +92,10 @@ public class User {
 
     public void setOnline(boolean online) {
         isOnline = online;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
     }
 }
